@@ -1,8 +1,7 @@
 <script lang="ts">
-import type { Account } from '@/core/domain/Account';
-import type { Transfer } from '@/core/domain/Transfer';
 import type { AccountOutput, PostTransferInput } from '@/core/gateways/IHttpGateway';
-import { getAccountsUsecase } from '@/factory';
+import { getAccountsUsecase, transferUsecase } from '@/factory';
+import { Account } from '@/mapping';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -15,16 +14,18 @@ export default defineComponent({
         const accounts: AccountOutput[] = []
         return { transfer, accounts }
     },
+    props: {
+        loggedAccount: {
+            type: Account,
+            required: true
+        }
+    },
     mounted() {
         (async () => {
-            const myAccount: Account = {}//accountContext.getAccount();
-            if (!myAccount) return;
-            const response: AccountOutput[] = [{ accountNumber: 111, name: "fulano" }]
-            //await getAccountsUsecase.execute();
-            const newAccounts = response.filter(
-                ({ accountNumber }) => accountNumber !== myAccount.accountNumber
+            const accounts: AccountOutput[] = await getAccountsUsecase.execute();
+            this.accounts = accounts.filter(
+                ({ accountNumber }) => accountNumber !== this.loggedAccount.account!.accountNumber
             );
-            this.accounts = newAccounts
         })()
     },
     methods: {
@@ -33,13 +34,10 @@ export default defineComponent({
                 alert("The recipient's account cannot be empty.");
                 return;
             }
-            const account = true//accountContext.getAccount();
-            if (!account) return;
-            const success = true
-            //     await transferUsecase.execute(
-            //     account.accountNumber!,
-            //     transfer
-            // );
+            const success = await transferUsecase.execute(
+                this.loggedAccount.account!.accountNumber!,
+                this.transfer
+            );
             if (success) this.$router.push(`/home`);
         },
         IsFormValid(): boolean {

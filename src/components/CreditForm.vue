@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { Credit } from '@/core/domain/Credit';
-// import { creditUsecase } from '@/factory';
+import { creditUsecase } from '@/factory';
+import { Account } from '@/mapping';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -12,11 +13,16 @@ export default defineComponent({
         }
         return { credit }
     },
+    props: {
+        loggedAccount: {
+            type: Account,
+            required: true
+        }
+    },
     methods: {
         async applyCredit() {
-            const account = true//accountContext.getAccount();
-            if (!account) return;
-            const success = true//await creditUsecase.execute(account.accountNumber!, credit);
+            const success = await creditUsecase
+                .execute(this.loggedAccount.account!.accountNumber!, this.credit);
             if (success) this.$router.push(`/home`);
         }
     }

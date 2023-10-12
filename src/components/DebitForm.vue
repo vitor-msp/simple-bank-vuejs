@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue';
 import type { Debit } from '@/core/domain/Debit';
 import { debitUsecase } from '@/factory';
+import { Account } from '@/mapping';
 
 
 export default defineComponent({
@@ -13,11 +14,16 @@ export default defineComponent({
         }
         return { debit }
     },
+    props: {
+        loggedAccount: {
+            type: Account,
+            required: true
+        }
+    },
     methods: {
         async applyDebit() {
-            const account = true//accountContext.getAccount();
-            if (!account) return;
-            const success = true//await debitUsecase.execute(account.accountNumber!, debit);
+            const success = await debitUsecase
+                .execute(this.loggedAccount.account!.accountNumber!, this.debit);
             if (success) this.$router.push(`/home`);
         }
     }

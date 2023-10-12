@@ -14,12 +14,7 @@ export default defineComponent({
     },
     methods: {
         async signUp() {
-            const account = true
-            // await createAccountUsecase.execute({
-            //     cpf: this.customer.cpf,
-            //     name: this.customer.name
-            // });
-            alert(JSON.stringify(this.customer));
+            const account = await createAccountUsecase.execute(this.customer);
             if (!account) return;
             alert(JSON.stringify(account));
             this.$router.push("/login")

@@ -3,12 +3,9 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "LogOut",
-    data() {
-        return {}
-    },
     methods: {
         logout() {
-            // accountContext.logout();
+            location.replace("/login")
         }
     }
 })

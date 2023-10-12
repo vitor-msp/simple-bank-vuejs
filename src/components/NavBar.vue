@@ -4,10 +4,13 @@ import LogOut from './LogOut.vue';
 
 export default defineComponent({
     name: "NavBar",
-    data() {
-        return { isLoggedIn: false }
-    },
-    components: { LogOut }
+    components: { LogOut },
+    props: {
+        isLoggedIn: {
+            type: Boolean,
+            required: true
+        }
+    }
 })
 </script>
 

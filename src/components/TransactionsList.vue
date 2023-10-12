@@ -1,54 +1,50 @@
 <script lang="ts">
-import type { GetTransactionsOutput, TransactionOutput } from '@/core/gateways/IHttpGateway';
+import type { TransactionOutput } from '@/core/gateways/IHttpGateway';
 import type { AccountOutput } from "@/core/gateways/IHttpGateway"
 import { getTransactionsUsecase } from '@/factory';
+import { Account } from '@/mapping';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "TransactionsList",
     data() {
         const transactions: TransactionOutput[] = []
-        return { transactions, currentAccountNumber: 111 }
+        return { transactions }
+    },
+    props: {
+        loggedAccount: {
+            type: Account,
+            required: true
+        }
     },
     methods: {
         async getTransactions() {
-            const account = true//await accountContext.getAccount();
-            if (!account) return;
-            const response: GetTransactionsOutput = {
-                transactions: [
-                    { createdAt: new Date(), type: 'credit', value: 15 },
-                    { createdAt: new Date(), type: 'debit', value: -7.69 },
-                    {
-                        createdAt: new Date(), type: 'transfer', value: 19.36,
-                        sender: { accountNumber: 111, name: "fulano" }, recipient: { accountNumber: 222, name: "ciclano" }
-                    }]
-            }
-            //await getTransactionsUsecase.execute(
-            //     account.accountNumber!
-            // );
+            const response = await getTransactionsUsecase.execute(
+                this.loggedAccount.account!.accountNumber!
+            );
             if (response) this.transactions = response.transactions;
         },
         getTransferMessage(sender: AccountOutput, recipient: AccountOutput) {
-            if (this.currentAccountNumber === sender.accountNumber) {
+            if (this.loggedAccount.account!.accountNumber === sender.accountNumber) {
                 return "sended to >>";
             }
-            if (this.currentAccountNumber === recipient.accountNumber) {
+            if (this.loggedAccount.account!.accountNumber === recipient.accountNumber) {
                 return "received from <<";
             }
         },
         getTransferAccountNumber(sender: AccountOutput, recipient: AccountOutput) {
-            if (this.currentAccountNumber === sender.accountNumber) {
+            if (this.loggedAccount.account!.accountNumber === sender.accountNumber) {
                 return recipient.accountNumber;
             }
-            if (this.currentAccountNumber === recipient.accountNumber) {
+            if (this.loggedAccount.account!.accountNumber === recipient.accountNumber) {
                 return sender.accountNumber;
             }
         },
         getTransferName(sender: AccountOutput, recipient: AccountOutput) {
-            if (this.currentAccountNumber === sender.accountNumber) {
+            if (this.loggedAccount.account!.accountNumber === sender.accountNumber) {
                 return recipient.name;
             }
-            if (this.currentAccountNumber === recipient.accountNumber) {
+            if (this.loggedAccount.account!.accountNumber === recipient.accountNumber) {
                 return sender.name;
             }
         },

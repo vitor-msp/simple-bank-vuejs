@@ -2,10 +2,18 @@
 import { defineComponent } from "vue";
 import BalanceDisplay from "../components/BalanceDisplay.vue"
 import TransactionsList from "../components/TransactionsList.vue"
+import { Account } from "@/mapping";
+import type LoginViewVue from "./LoginView.vue";
 
 export default defineComponent({
   name: "HomeView",
   components: { BalanceDisplay, TransactionsList },
+  props: {
+    loggedAccount: {
+      type: Account,
+      required: true
+    }
+  },
   methods: {
     credit() {
       this.$router.push("/credit");
@@ -36,7 +44,7 @@ export default defineComponent({
         transfer
       </button>
     </div>
-    <BalanceDisplay />
-    <TransactionsList />
+    <BalanceDisplay :logged-account="loggedAccount" />
+    <TransactionsList :logged-account="loggedAccount" />
   </div>
 </template>

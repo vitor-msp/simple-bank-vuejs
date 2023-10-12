@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { GetBalanceOutput } from '@/core/gateways/IHttpGateway';
 import { getBalanceUsecase } from '@/factory';
+import { Account } from '@/mapping';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -9,11 +9,15 @@ export default defineComponent({
         let balance: number = 0;
         return { balance }
     },
+    props: {
+        loggedAccount: {
+            type: Account,
+            required: true
+        }
+    },
     mounted() {
         (async () => {
-            const account = true//await accountContext.getAccount();
-            if (!account) return;
-            const response: GetBalanceOutput = { balance: 15 }//await getBalanceUsecase.execute(account.accountNumber!);
+            const response = await getBalanceUsecase.execute(this.loggedAccount.account!.accountNumber!);
             if (response) this.balance = response.balance;
         })();
     }

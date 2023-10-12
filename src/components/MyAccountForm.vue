@@ -1,56 +1,48 @@
 <script lang="ts">
-import type { Account } from '@/core/domain/Account';
-import { inactivateAccountUsecase } from '@/factory';
+import { inactivateAccountUsecase, updateAccountUsecase } from '@/factory';
+import { Account } from '@/mapping';
 import { defineComponent } from 'vue';
-
 
 export default defineComponent({
     name: "MyAccountForm",
     data() {
-        const defaultAccount: Account = {
-            accountNumber: 0,
-            createdAt: new Date(),
-            owner: { name: "", cpf: "" },
-        }
         let canEdit: boolean = false
-        return { account: defaultAccount, defaultAccount, canEdit }
+        return { account: new Account(), canEdit }
     },
-    mounted() {
-        const response = true//accountContext.getAccount();
-        if (!response) return;
-        const accountFromApi: Account = {
-            accountNumber: 100,
-            createdAt: new Date(),
-            owner: { name: "fulano de tal", cpf: "1010" },
+    props: {
+        defaultAccount: {
+            type: Account,
+            required: true
         }
-        this.defaultAccount = accountFromApi
-        this.account = { ...accountFromApi }
-        this.account.owner = { ...accountFromApi.owner }
+    },
+    emits: ["update-account"],
+    mounted() {
+        this.account.account = { ...this.defaultAccount.account }
+        this.account.account.owner = { ...this.defaultAccount.account?.owner }
     },
     methods: {
         async updateAccount() {
-            const success = true
-            // await accountContext.updateAccount(
-            //     currentAccount.accountNumber!,
-            //     account.owner!
-            // );
+            const success = await updateAccountUsecase.execute(
+                this.account.account!.accountNumber!,
+                this.account.account!.owner!
+            );
             if (!success) return;
-            // currentAccount.owner = account.owner;
+            const updatedAccount = new Account()
+            updatedAccount.account = { ...this.account.account }
+            updatedAccount.account.owner = { ...this.account.account?.owner }
+            this.$emit("update-account", updatedAccount)
             this.setCanEdit(false);
-            this.defaultAccount = { ...this.account }
-            this.defaultAccount.owner = { ...this.account.owner }
         },
         async inactivateAccount() {
-            const success = true
-            //     await inactivateAccountUsecase.execute(
-            //     currentAccount.accountNumber!
-            // );
-            if (success) window.location.replace("/");
+            const success = await inactivateAccountUsecase.execute(
+                this.account.account!.accountNumber!
+            );
+            if (success) location.replace("/login");
         },
         cancelEdit() {
             this.setCanEdit(false);
-            this.account = { ...this.defaultAccount }
-            this.account.owner = { ...this.defaultAccount.owner }
+            this.account.account = { ...this.defaultAccount.account }
+            this.account.account.owner = { ...this.defaultAccount.account?.owner }
         },
         setCanEdit(value: boolean) {
             this.canEdit = value
@@ -66,15 +58,17 @@ export default defineComponent({
             <fieldset class="border border-blue-800 mb-1 p-3">
                 <div>
                     <label htmlFor="accountNumber">account number</label>
-                    <input type="text" id="accountNumber" :value="account.accountNumber" disabled="true" class="p-1" />
+                    <input type="text" id="accountNumber" :value="account.account?.accountNumber" disabled="true"
+                        class="p-1" />
                 </div>
                 <div>
                     <label htmlFor="name">name</label>
-                    <input type="text" id="name" v-model="account!.owner!.name" :disabled="!canEdit" class="p-1" />
+                    <input v-if="account.account && account.account.owner" type="text" id="name"
+                        v-model="account.account!.owner!.name" :disabled="!canEdit" class="p-1" />
                 </div>
                 <div>
                     <label htmlFor="cpf">cpf</label>
-                    <input type="text" id="cpf" :value="account!.owner!.cpf" disabled="true" class="p-1" />
+                    <input type="text" id="cpf" :value="account.account?.owner?.cpf" disabled="true" class="p-1" />
                 </div>
             </fieldset>
             <div v-if="canEdit" class="flex justify-between items-center w-full gap-2">

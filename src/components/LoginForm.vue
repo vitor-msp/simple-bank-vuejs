@@ -1,4 +1,6 @@
 <script lang="ts">
+import { getAccountUsecase } from '@/factory';
+import { Account } from '@/mapping';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -9,11 +11,15 @@ export default defineComponent({
             accountNumber
         }
     },
+    emits: ["login"],
     methods: {
         async login() {
-            // const success = await accountContext.login(+this.accountNumber);
-            const success = true
-            if (success) this.$router.push("/home")
+            const response = await getAccountUsecase.execute(+this.accountNumber)
+            if (!response) return
+            const account = new Account()
+            account.account = response
+            this.$emit("login", account)
+            this.$router.push("/home")
         }
     }
 })
