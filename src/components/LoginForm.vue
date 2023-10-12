@@ -20,22 +20,20 @@ export default defineComponent({
 </script>
 
 <template>
-    <main>
-        <div>
-            <h2>login</h2>
-            <form @submit.prevent="login()">
-                <fieldset>
-                    <div>
-                        <label htmlFor="accountNumber">account number</label>
-                        <input type="text" id="accountNumber" v-model="accountNumber" />
-                    </div>
-                </fieldset>
+    <div>
+        <h2>login</h2>
+        <form @submit.prevent="login()">
+            <fieldset>
                 <div>
-                    <button type="submit">
-                        login
-                    </button>
+                    <label htmlFor="accountNumber">account number</label>
+                    <input type="text" id="accountNumber" v-model="accountNumber" />
                 </div>
-            </form>
-        </div>
-    </main>
+            </fieldset>
+            <div>
+                <button type="submit">
+                    login
+                </button>
+            </div>
+        </form>
+    </div>
 </template>
