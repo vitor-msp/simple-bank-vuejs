@@ -15,7 +15,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <button type="button" @click="logout()">
+    <button type="button" @click="logout()" class="hover:bg-gray-100 hover:text-blue-800 w-max p-2 text-center">
         logout
     </button>
 </template>

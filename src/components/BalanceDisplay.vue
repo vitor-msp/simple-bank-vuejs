@@ -21,9 +21,9 @@ export default defineComponent({
 </script>
 
 <template>
-    <div>
-        <span>Balance:</span>
-        <span>
+    <div class="flex justify-center my-6">
+        <span class="text-3xl">Balance:</span>
+        <span class="text-3xl mx-2 text-blue-800 font-bold">
             {{ balance.toLocaleString("pt-br", {
                 style: "currency",
                 currency: "BRL",

@@ -9,7 +9,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <main>
-    <DebitForm />
-  </main>
+  <DebitForm />
 </template>

@@ -21,21 +21,22 @@ export default defineComponent({
 </script>
 
 <template>
-  <main>
-    <div>
-      <div>
-        <button type="button" @click="credit()">
-          credit
-        </button>
-        <button type="button" @click="debit()">
-          debit
-        </button>
-        <button type="button" @click="transfer()">
-          transfer
-        </button>
-      </div>
-      <BalanceDisplay />
-      <TransactionsList />
+  <div>
+    <div class="flex justify-center items-center w-full gap-4 mt-4">
+      <button type="button" @click="credit()"
+        class="w-auto rounded-md transition-all bg-blue-800 py-2 px-4 text-xl hover:font-bold hover:bg-blue-600 text-gray-100">
+        credit
+      </button>
+      <button type="button" @click="debit()"
+        class="w-auto rounded-md transition-all bg-blue-800 py-2 px-4 text-xl hover:font-bold hover:bg-blue-600 text-gray-100">
+        debit
+      </button>
+      <button type="button" @click="transfer()"
+        class="w-auto rounded-md transition-all bg-blue-800 py-2 px-4 text-xl hover:font-bold hover:bg-blue-600 text-gray-100">
+        transfer
+      </button>
     </div>
-  </main>
+    <BalanceDisplay />
+    <TransactionsList />
+  </div>
 </template>

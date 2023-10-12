@@ -9,7 +9,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <main>
-    <MyAccountForm />
-  </main>
+  <MyAccountForm />
 </template>

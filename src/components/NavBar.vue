@@ -12,13 +12,15 @@ export default defineComponent({
 </script>
 
 <template>
-    <nav v-if="isLoggedIn">
-        <RouterLink to="/home">home</RouterLink>
-        <RouterLink to="/my-account">my account</RouterLink>
+    <nav v-if="isLoggedIn" class="flex justify-evenly items-center w-full text-gray-100 font-bold bg-blue-800">
+        <RouterLink to="/home" class="hover:bg-gray-100 hover:text-blue-800 w-max p-2 text-center">home</RouterLink>
+        <RouterLink to="/my-account" class="hover:bg-gray-100 hover:text-blue-800 w-max p-2 text-center">my account
+        </RouterLink>
         <LogOut />
     </nav>
-    <nav v-else>
-        <RouterLink to="/login">login</RouterLink>
-        <RouterLink to="/sign-up">sign up</RouterLink>
+    <nav v-else class="flex justify-evenly items-center w-full text-gray-100 font-bold bg-blue-800">
+        <RouterLink to="/login" class="hover:bg-gray-100 hover:text-blue-800 w-max p-2 text-center">login</RouterLink>
+        <RouterLink to="/sign-up" class="hover:bg-gray-100 hover:text-blue-800 w-max p-2 text-center">sign up
+        </RouterLink>
     </nav>
 </template>

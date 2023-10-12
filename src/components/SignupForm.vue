@@ -29,21 +29,21 @@ export default defineComponent({
 </script>
 
 <template>
-    <div>
-        <h2>sign up</h2>
+    <div class="default-form">
+        <h2 class="text-3xl mb-3">sign up</h2>
         <form @submit.prevent="signUp()">
-            <fieldset>
+            <fieldset class="border border-blue-800 mb-1 p-3">
                 <div>
                     <label htmlFor="name">name</label>
-                    <input type="text" id="name" v-model="customer.name" />
+                    <input type="text" id="name" v-model="customer.name" class="p-1" />
                 </div>
                 <div>
                     <label htmlFor="text">cpf</label>
-                    <input type="text" id="cpf" v-model="customer.cpf" />
+                    <input type="text" id="cpf" v-model="customer.cpf" class="p-1" />
                 </div>
             </fieldset>
-            <div>
-                <button type="submit">
+            <div class="flex justify-between items-center w-full gap-2">
+                <button type="submit" class="bg-blue-800 p-1 text-xl hover:font-bold hover:bg-blue-600 text-gray-100">
                     sign up
                 </button>
             </div>

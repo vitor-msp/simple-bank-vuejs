@@ -10,9 +10,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <header>
+  <div>
     <NavBar />
-  </header>
-
-  <RouterView />
+    <main>
+      <RouterView />
+    </main>
+  </div>
 </template>

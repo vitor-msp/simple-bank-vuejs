@@ -17,7 +17,7 @@ export default defineComponent({
             const response: GetTransactionsOutput = {
                 transactions: [
                     { createdAt: new Date(), type: 'credit', value: 15 },
-                    { createdAt: new Date(), type: 'debit', value: 7.69 },
+                    { createdAt: new Date(), type: 'debit', value: -7.69 },
                     {
                         createdAt: new Date(), type: 'transfer', value: 19.36,
                         sender: { accountNumber: 111, name: "fulano" }, recipient: { accountNumber: 222, name: "ciclano" }
@@ -52,40 +52,47 @@ export default defineComponent({
                 return sender.name;
             }
         },
+        getTransactionCSSClasses(transaction: TransactionOutput) {
+            return `font-bold ${transaction.value.toString().includes("-") ? "text-red-600" : "text-green-600"}`
+        }
     }
 })
 </script>
 
 <template>
-    <div>
-        <div v-if="transactions.length === 0">
-            <button type="button" @click="getTransactions()">
+    <div class="mb-8">
+        <div v-if="transactions.length === 0" class="flex justify-center items-center w-full gap-4 mt-4">
+            <button type="button" @click="getTransactions()"
+                class="w-auto rounded-md transition-all hover:bg-blue-800 py-2 px-4 text-xl hover:font-bold bg-blue-600 text-gray-100">
                 show transactions
             </button>
         </div>
-        <div>
-            <ul>
-                <li v-for="transaction in transactions" :key="transaction.createdAt.getTime()">
-                    <div>
-                        <span>{{ transaction.type }}</span>
-                        <br>
-                        <span>
+        <div class="flex justify-center items-center w-full gap-4 mt-4">
+            <ul class="w-3/5">
+                <li v-for="transaction in transactions" :key="transaction.createdAt.getTime()"
+                    class="rounded-md hover:bg-blue-200">
+                    <div class="flex justify-evenly items-center w-full gap-4 mt-4 p-4">
+                        <span class="font-bold">{{ transaction.type }}</span>
+                        <span :class="getTransactionCSSClasses(transaction)">
                             {{ transaction.value }}
                         </span>
-                        <br>
                         <span>{{ transaction.createdAt.toDateString() }}</span>
-                        <div v-if="transaction.sender && transaction.recipient">
+                        <div v-if="transaction.sender && transaction.recipient"
+                            className="flex justify-center evenly items-center w-full gap-4 mt-4 p-4">
                             <div>
-                                <span> {{ getTransferMessage(transaction.sender, transaction.recipient) }} </span>
+                                <span className="font-bold text-blue-800"> {{ getTransferMessage(transaction.sender,
+                                    transaction.recipient) }} </span>
                             </div>
-                            <div>
+                            <div className="flex flex-col justify-center items-center">
                                 <div>
-                                    <span> account number: </span>
-                                    <span> {{ getTransferAccountNumber(transaction.sender, transaction.recipient) }} </span>
+                                    <span className="font-semibold"> account number: </span>
+                                    <span className="ml-2"> {{ getTransferAccountNumber(transaction.sender,
+                                        transaction.recipient) }} </span>
                                 </div>
                                 <div>
-                                    <span> name: </span>
-                                    <span> {{ getTransferName(transaction.sender, transaction.recipient) }} </span>
+                                    <span className="font-semibold"> name: </span>
+                                    <span className="ml-2"> {{ getTransferName(transaction.sender, transaction.recipient) }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
